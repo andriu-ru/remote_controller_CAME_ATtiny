@@ -1,0 +1,371 @@
+
+remote_controller_CAME_ATtiny.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000178  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000004  00800060  00000178  0000020c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          0000000e  00800064  00800064  00000210  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000210  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000240  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000040  00000000  00000000  0000027c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000006d7  00000000  00000000  000002bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000048a  00000000  00000000  00000993  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000335  00000000  00000000  00000e1d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000064  00000000  00000000  00001154  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000002e1  00000000  00000000  000011b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    0000028e  00000000  00000000  00001499  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000030  00000000  00000000  00001727  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
+   4:	20 c0       	rjmp	.+64     	; 0x46 <__bad_interrupt>
+   6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
+   8:	1e c0       	rjmp	.+60     	; 0x46 <__bad_interrupt>
+   a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
+   c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
+   e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
+  10:	1a c0       	rjmp	.+52     	; 0x46 <__bad_interrupt>
+  12:	19 c0       	rjmp	.+50     	; 0x46 <__bad_interrupt>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+
+0000001c <__do_copy_data>:
+  1c:	10 e0       	ldi	r17, 0x00	; 0
+  1e:	a0 e6       	ldi	r26, 0x60	; 96
+  20:	b0 e0       	ldi	r27, 0x00	; 0
+  22:	e8 e7       	ldi	r30, 0x78	; 120
+  24:	f1 e0       	ldi	r31, 0x01	; 1
+  26:	02 c0       	rjmp	.+4      	; 0x2c <__do_copy_data+0x10>
+  28:	05 90       	lpm	r0, Z+
+  2a:	0d 92       	st	X+, r0
+  2c:	a4 36       	cpi	r26, 0x64	; 100
+  2e:	b1 07       	cpc	r27, r17
+  30:	d9 f7       	brne	.-10     	; 0x28 <__do_copy_data+0xc>
+
+00000032 <__do_clear_bss>:
+  32:	20 e0       	ldi	r18, 0x00	; 0
+  34:	a4 e6       	ldi	r26, 0x64	; 100
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	01 c0       	rjmp	.+2      	; 0x3c <.do_clear_bss_start>
+
+0000003a <.do_clear_bss_loop>:
+  3a:	1d 92       	st	X+, r1
+
+0000003c <.do_clear_bss_start>:
+  3c:	a2 37       	cpi	r26, 0x72	; 114
+  3e:	b2 07       	cpc	r27, r18
+  40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
+  42:	2d d0       	rcall	.+90     	; 0x9e <main>
+  44:	97 c0       	rjmp	.+302    	; 0x174 <_exit>
+
+00000046 <__bad_interrupt>:
+  46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
+
+00000048 <setup_ports>:
+	
+} //Конец функции main
+
+void setup_ports(void) //Функция начальной настройки портов процессора
+{
+	PORTB = 0b00000;
+  48:	18 ba       	out	0x18, r1	; 24
+	DDRB = 0b00110;
+  4a:	86 e0       	ldi	r24, 0x06	; 6
+  4c:	87 bb       	out	0x17, r24	; 23
+  4e:	08 95       	ret
+
+00000050 <razbivka>:
+}
+
+int razbivka (int z) // Функция считывает при помощи маски maska первый бит переменной z
+{
+	z = z & maska;
+  50:	20 91 60 00 	lds	r18, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+  54:	30 91 61 00 	lds	r19, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+	
+	return z;
+}
+  58:	82 23       	and	r24, r18
+  5a:	93 23       	and	r25, r19
+  5c:	08 95       	ret
+
+0000005e <zero>:
+
+void zero (void) //Вызывая данную функцию получаем 0 в интерфейсе
+{
+	PORTB &= ~(1<<PB1); //Первый бит "0"
+  5e:	88 b3       	in	r24, 0x18	; 24
+  60:	8d 7f       	andi	r24, 0xFD	; 253
+  62:	88 bb       	out	0x18, r24	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  64:	80 e8       	ldi	r24, 0x80	; 128
+  66:	8a 95       	dec	r24
+  68:	f1 f7       	brne	.-4      	; 0x66 <zero+0x8>
+	_delay_us(one_stop);
+	PORTB |= (1<<PB1);
+  6a:	88 b3       	in	r24, 0x18	; 24
+  6c:	82 60       	ori	r24, 0x02	; 2
+  6e:	88 bb       	out	0x18, r24	; 24
+  70:	8f eb       	ldi	r24, 0xBF	; 191
+  72:	90 e0       	ldi	r25, 0x00	; 0
+  74:	01 97       	sbiw	r24, 0x01	; 1
+  76:	f1 f7       	brne	.-4      	; 0x74 <zero+0x16>
+  78:	00 c0       	rjmp	.+0      	; 0x7a <zero+0x1c>
+  7a:	00 00       	nop
+  7c:	08 95       	ret
+
+0000007e <one>:
+	_delay_us(two_stop);
+}
+
+void one (void) //Вызывая данную функцию получаем 1 в интерфейсе
+{
+	PORTB &= ~(1<<PB1); //Третий бит "1"
+  7e:	88 b3       	in	r24, 0x18	; 24
+  80:	8d 7f       	andi	r24, 0xFD	; 253
+  82:	88 bb       	out	0x18, r24	; 24
+  84:	8f eb       	ldi	r24, 0xBF	; 191
+  86:	90 e0       	ldi	r25, 0x00	; 0
+  88:	01 97       	sbiw	r24, 0x01	; 1
+  8a:	f1 f7       	brne	.-4      	; 0x88 <one+0xa>
+  8c:	00 c0       	rjmp	.+0      	; 0x8e <one+0x10>
+  8e:	00 00       	nop
+	_delay_us(two_stop);
+	PORTB |= (1<<PB1);
+  90:	88 b3       	in	r24, 0x18	; 24
+  92:	82 60       	ori	r24, 0x02	; 2
+  94:	88 bb       	out	0x18, r24	; 24
+  96:	90 e8       	ldi	r25, 0x80	; 128
+  98:	9a 95       	dec	r25
+  9a:	f1 f7       	brne	.-4      	; 0x98 <one+0x1a>
+  9c:	08 95       	ret
+
+0000009e <main>:
+	void zero (void); //Вызывая данную функцию получаем 0 в интерфейсе
+
+int main(void) //Начало функции main
+{
+    
+	setup_ports(); //Насройка портов процессора
+  9e:	d4 df       	rcall	.-88     	; 0x48 <setup_ports>
+	
+	for (int i = 0; i < 12; ++i) //в цикле разбиваем число содержащееся в переменной key на отдельные биты и помещаем его в массив massiv
+  a0:	c0 e0       	ldi	r28, 0x00	; 0
+  a2:	d0 e0       	ldi	r29, 0x00	; 0
+  a4:	15 c0       	rjmp	.+42     	; 0xd0 <__stack+0x31>
+	{
+		massiv[i] = razbivka(key);
+  a6:	00 91 62 00 	lds	r16, 0x0062	; 0x800062 <key>
+  aa:	10 91 63 00 	lds	r17, 0x0063	; 0x800063 <key+0x1>
+  ae:	c8 01       	movw	r24, r16
+  b0:	cf df       	rcall	.-98     	; 0x50 <razbivka>
+  b2:	fe 01       	movw	r30, r28
+  b4:	ea 59       	subi	r30, 0x9A	; 154
+  b6:	ff 4f       	sbci	r31, 0xFF	; 255
+  b8:	80 83       	st	Z, r24
+		key = key/2;
+  ba:	c8 01       	movw	r24, r16
+  bc:	99 23       	and	r25, r25
+  be:	0c f4       	brge	.+2      	; 0xc2 <__stack+0x23>
+  c0:	01 96       	adiw	r24, 0x01	; 1
+  c2:	95 95       	asr	r25
+  c4:	87 95       	ror	r24
+  c6:	90 93 63 00 	sts	0x0063, r25	; 0x800063 <key+0x1>
+  ca:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <key>
+int main(void) //Начало функции main
+{
+    
+	setup_ports(); //Насройка портов процессора
+	
+	for (int i = 0; i < 12; ++i) //в цикле разбиваем число содержащееся в переменной key на отдельные биты и помещаем его в массив massiv
+  ce:	21 96       	adiw	r28, 0x01	; 1
+  d0:	cc 30       	cpi	r28, 0x0C	; 12
+  d2:	d1 05       	cpc	r29, r1
+  d4:	44 f3       	brlt	.-48     	; 0xa6 <__stack+0x7>
+	}
+	
+    while (1) // Начало основного цикла while
+    {
+		
+		if (~PINB & (1<<PB0)) //Проверка нажатой клавиши
+  d6:	b0 99       	sbic	0x16, 0	; 22
+  d8:	49 c0       	rjmp	.+146    	; 0x16c <__stack+0xcd>
+		{
+			PORTB |= (1<<PB2); //Светодиод индицирующий работу пульта
+  da:	88 b3       	in	r24, 0x18	; 24
+  dc:	84 60       	ori	r24, 0x04	; 4
+  de:	88 bb       	out	0x18, r24	; 24
+			
+			PORTB |= (1<<PB1);
+  e0:	88 b3       	in	r24, 0x18	; 24
+  e2:	82 60       	ori	r24, 0x02	; 2
+  e4:	88 bb       	out	0x18, r24	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  e6:	8f e2       	ldi	r24, 0x2F	; 47
+  e8:	95 e7       	ldi	r25, 0x75	; 117
+  ea:	01 97       	sbiw	r24, 0x01	; 1
+  ec:	f1 f7       	brne	.-4      	; 0xea <__stack+0x4b>
+  ee:	00 c0       	rjmp	.+0      	; 0xf0 <__stack+0x51>
+  f0:	00 00       	nop
+			_delay_ms(100);
+			PORTB &= ~(1<<PB1);
+  f2:	88 b3       	in	r24, 0x18	; 24
+  f4:	8d 7f       	andi	r24, 0xFD	; 253
+  f6:	88 bb       	out	0x18, r24	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  f8:	80 e8       	ldi	r24, 0x80	; 128
+  fa:	9d e0       	ldi	r25, 0x0D	; 13
+  fc:	01 97       	sbiw	r24, 0x01	; 1
+  fe:	f1 f7       	brne	.-4      	; 0xfc <__stack+0x5d>
+ 100:	26 c0       	rjmp	.+76     	; 0x14e <__stack+0xaf>
+			_delay_us(start_delay); //Пилотный период
+			
+			while(~PINB & (1<<PB0)) //Стартовый цикл while. Если кнопка пульта нажата начинаем генерить ключь в эфир
+			{
+				
+				PORTB |= (1<<PB1); //Стартовый бит
+ 102:	88 b3       	in	r24, 0x18	; 24
+ 104:	82 60       	ori	r24, 0x02	; 2
+ 106:	88 bb       	out	0x18, r24	; 24
+ 108:	90 e8       	ldi	r25, 0x80	; 128
+ 10a:	9a 95       	dec	r25
+ 10c:	f1 f7       	brne	.-4      	; 0x10a <__stack+0x6b>
+ 10e:	17 c0       	rjmp	.+46     	; 0x13e <__stack+0x9f>
+				_delay_us(one_stop);
+				
+					while(~PINB & (1<<PB0)) //Кодовый цикл while. Если кнопка пульта нажата выдаем в эфир 12 битный ключь
+					{
+						if (0 == (massiv[a] & (1<<0)))
+ 110:	e0 91 64 00 	lds	r30, 0x0064	; 0x800064 <__data_end>
+ 114:	f0 91 65 00 	lds	r31, 0x0065	; 0x800065 <__data_end+0x1>
+ 118:	ea 59       	subi	r30, 0x9A	; 154
+ 11a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 11c:	80 81       	ld	r24, Z
+ 11e:	80 fd       	sbrc	r24, 0
+ 120:	02 c0       	rjmp	.+4      	; 0x126 <__stack+0x87>
+						{
+							zero();
+ 122:	9d df       	rcall	.-198    	; 0x5e <zero>
+ 124:	01 c0       	rjmp	.+2      	; 0x128 <__stack+0x89>
+						}
+						
+						else
+						{
+							one();
+ 126:	ab df       	rcall	.-170    	; 0x7e <one>
+						}
+						
+						a++;
+ 128:	80 91 64 00 	lds	r24, 0x0064	; 0x800064 <__data_end>
+ 12c:	90 91 65 00 	lds	r25, 0x0065	; 0x800065 <__data_end+0x1>
+ 130:	01 96       	adiw	r24, 0x01	; 1
+ 132:	90 93 65 00 	sts	0x0065, r25	; 0x800065 <__data_end+0x1>
+ 136:	80 93 64 00 	sts	0x0064, r24	; 0x800064 <__data_end>
+						
+						if (a>=12) break;
+ 13a:	0c 97       	sbiw	r24, 0x0c	; 12
+ 13c:	14 f4       	brge	.+4      	; 0x142 <__stack+0xa3>
+			{
+				
+				PORTB |= (1<<PB1); //Стартовый бит
+				_delay_us(one_stop);
+				
+					while(~PINB & (1<<PB0)) //Кодовый цикл while. Если кнопка пульта нажата выдаем в эфир 12 битный ключь
+ 13e:	b0 9b       	sbis	0x16, 0	; 22
+ 140:	e7 cf       	rjmp	.-50     	; 0x110 <__stack+0x71>
+						
+						if (a>=12) break;
+						
+					} //Конец кодового цикла while
+				
+					if (a>=12) break;		
+ 142:	80 91 64 00 	lds	r24, 0x0064	; 0x800064 <__data_end>
+ 146:	90 91 65 00 	lds	r25, 0x0065	; 0x800065 <__data_end+0x1>
+ 14a:	0c 97       	sbiw	r24, 0x0c	; 12
+ 14c:	14 f4       	brge	.+4      	; 0x152 <__stack+0xb3>
+			PORTB |= (1<<PB1);
+			_delay_ms(100);
+			PORTB &= ~(1<<PB1);
+			_delay_us(start_delay); //Пилотный период
+			
+			while(~PINB & (1<<PB0)) //Стартовый цикл while. Если кнопка пульта нажата начинаем генерить ключь в эфир
+ 14e:	b0 9b       	sbis	0x16, 0	; 22
+ 150:	d8 cf       	rjmp	.-80     	; 0x102 <__stack+0x63>
+				
+					if (a>=12) break;		
+				
+			} //Конец стартового цикла while  
+			
+			a = 0;
+ 152:	10 92 65 00 	sts	0x0065, r1	; 0x800065 <__data_end+0x1>
+ 156:	10 92 64 00 	sts	0x0064, r1	; 0x800064 <__data_end>
+			
+			PORTB &= ~(1<<PB1);
+ 15a:	88 b3       	in	r24, 0x18	; 24
+ 15c:	8d 7f       	andi	r24, 0xFD	; 253
+ 15e:	88 bb       	out	0x18, r24	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 160:	8b ed       	ldi	r24, 0xDB	; 219
+ 162:	95 e0       	ldi	r25, 0x05	; 5
+ 164:	01 97       	sbiw	r24, 0x01	; 1
+ 166:	f1 f7       	brne	.-4      	; 0x164 <__stack+0xc5>
+ 168:	00 c0       	rjmp	.+0      	; 0x16a <__stack+0xcb>
+ 16a:	00 00       	nop
+			_delay_ms(5);
+			
+		} //Конец проверки нажатия клавиши
+		
+		PORTB &= ~(1<<PB2); //Отключаем индикацию работы пульта
+ 16c:	88 b3       	in	r24, 0x18	; 24
+ 16e:	8b 7f       	andi	r24, 0xFB	; 251
+ 170:	88 bb       	out	0x18, r24	; 24
+		
+    } //Конец основного цикла while
+ 172:	b1 cf       	rjmp	.-158    	; 0xd6 <__stack+0x37>
+
+00000174 <_exit>:
+ 174:	f8 94       	cli
+
+00000176 <__stop_program>:
+ 176:	ff cf       	rjmp	.-2      	; 0x176 <__stop_program>
